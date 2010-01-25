@@ -574,6 +574,15 @@ function initQMock ( assert, opt ) {
               if (parameters[i] && parameters[i].constructor === Function) {
                   parameters[i].apply( null, method.callbackArgs );
               }
+			  //BEGIN ETM - Support JSON Function Callbacks 
+              else if (parameters[i] !== undefined && !parameters[i].nodeName) { 	                    
+                for (var key in parameters[i]) {
+        		  if (parameters[i][key] && parameters[i][key].constructor === Function && method.callbackArgs && method.callbackArgs.length && method.callbackArgs.length > 0) { 
+    				  parameters[i][key].apply(undefined, method.callbackArgs);		
+        		  }            	 
+                }
+          	  }
+              //END ETM - Support JSON Function Callbacks  
             }
 
             // Assert arguments against expected presentations and return appropriate object
